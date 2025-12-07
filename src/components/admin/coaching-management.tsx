@@ -8,10 +8,27 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Users, User, Star, Calendar } from 'lucide-react'
 
+interface Coach {
+  id: string
+  profile: {
+    username: string
+    display_name?: string
+  }
+  specialties?: string[]
+  available?: boolean
+}
+
+interface Session {
+  id: string
+  date: string
+  status: string
+  participants_count?: number
+}
+
 export function CoachingManagement() {
-  const [coaches, setCoaches] = useState<any[]>([])
-  const [groupSessions, setGroupSessions] = useState<any[]>([])
-  const [privateSessions, setPrivateSessions] = useState<any[]>([])
+  const [coaches, setCoaches] = useState<Coach[]>([])
+  const [groupSessions, setGroupSessions] = useState<Session[]>([])
+  const [privateSessions, setPrivateSessions] = useState<Session[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {

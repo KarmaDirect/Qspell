@@ -65,7 +65,7 @@ export function TeamRoster({ members, teamId, isCaptain, captainId }: TeamRoster
     }
   }
 
-  const getSoloRank = (stats: any[]) => {
+  const getSoloRank = (stats: Member['profile']['player_stats']) => {
     const soloStats = stats.find((s) => s.queue_type === 'RANKED_SOLO_5x5')
     if (!soloStats) return 'Unranked'
     return `${soloStats.tier} ${soloStats.rank}`

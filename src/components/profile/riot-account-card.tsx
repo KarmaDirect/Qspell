@@ -58,9 +58,9 @@ export function RiotAccountCard({
 
       toast.success('Compte supprimé avec succès !')
       window.location.reload()
-    } catch (error: any) {
+    } catch (error) {
       toast.error('Erreur de suppression', {
-        description: error.message
+        description: error instanceof Error ? error.message : 'Une erreur est survenue'
       })
     } finally {
       setDeleting(null)
@@ -92,9 +92,9 @@ export function RiotAccountCard({
 
       toast.success('Stats synchronisées avec succès !')
       window.location.reload()
-    } catch (error: any) {
+    } catch (error) {
       toast.error('Erreur de synchronisation', {
-        description: error.message
+        description: error instanceof Error ? error.message : 'Une erreur est survenue'
       })
     } finally {
       setSyncing(null)
@@ -137,9 +137,9 @@ export function RiotAccountCard({
       setGameName('')
       setTagLine('')
       window.location.reload()
-    } catch (error: any) {
+    } catch (error) {
       toast.error('Erreur lors de la recherche du compte', {
-        description: error.message || 'Vérifiez que le nom et le tag sont corrects'
+        description: error instanceof Error ? error.message : 'Vérifiez que le nom et le tag sont corrects'
       })
     } finally {
       setLoading(false)

@@ -44,8 +44,7 @@ export function TournamentForm() {
         return
       }
 
-      const supabaseAny = supabase as any
-      const { data, error } = await supabaseAny
+      const { data, error } = await supabase
         .from('tournaments')
         .insert({
           ...formData,
@@ -65,9 +64,9 @@ export function TournamentForm() {
 
       toast.success('Tournoi créé avec succès !')
       router.push(`/dashboard/tournaments/${data.id}`)
-    } catch (error: any) {
+    } catch (error) {
       toast.error('Une erreur est survenue', {
-        description: error.message
+        description: error instanceof Error ? error.message : 'Impossible de créer le tournoi'
       })
     } finally {
       setLoading(false)

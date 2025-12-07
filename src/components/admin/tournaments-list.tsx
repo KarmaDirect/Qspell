@@ -44,7 +44,7 @@ export function AdminTournamentsList() {
   }
 
   const getStatusBadge = (status: string) => {
-    const variants: Record<string, any> = {
+    const variants: Record<string, 'outline' | 'default' | 'secondary' | 'destructive'> = {
       upcoming: 'outline',
       registration_open: 'default',
       in_progress: 'secondary',

@@ -25,7 +25,7 @@ interface Course {
 interface CourseHeaderProps {
   course: Course
   hasSubscription: boolean
-  progress: Record<string, any>
+  progress: Record<string, { completed: boolean; progress?: number }>
 }
 
 const laneColors: Record<string, string> = {
@@ -39,7 +39,7 @@ const laneColors: Record<string, string> = {
 
 export function CourseHeader({ course, hasSubscription, progress }: CourseHeaderProps) {
   const totalLessons = course.lessons?.length || 0
-  const completedLessons = Object.values(progress).filter((p: any) => p.completed).length
+  const completedLessons = Object.values(progress).filter((p) => p.completed).length
   const overallProgress = totalLessons > 0 ? Math.round((completedLessons / totalLessons) * 100) : 0
 
   return (

@@ -25,11 +25,20 @@ export function RegisterForm() {
 
     try {
       // Check if username is available
-      const { data: existingProfile } = await supabase
+      const { data: existingProfile, error: checkError } = await supabase
         .from('profiles')
         .select('username')
         .eq('username', username)
-        .single()
+        .maybeSingle() // Use maybeSingle() instead of single() to avoid error on no results
+
+      // If there's an error other than "not found", show it
+      if (checkError && checkError.code !== 'PGRST116') {
+        toast.error('Erreur de vérification', {
+          description: checkError.message,
+        })
+        setLoading(false)
+        return
+      }
 
       if (existingProfile) {
         toast.error('Nom d\'utilisateur déjà pris', {
@@ -59,13 +68,13 @@ export function RegisterForm() {
 
       if (data.user) {
         toast.success('Compte créé avec succès !', {
-          description: 'Vérifiez votre email pour confirmer votre compte',
+          description: 'Vous pouvez maintenant vous connecter',
         })
         router.push('/login')
       }
     } catch (error) {
       toast.error('Une erreur est survenue', {
-        description: 'Veuillez réessayer plus tard',
+        description: error instanceof Error ? error.message : 'Veuillez réessayer plus tard',
       })
     } finally {
       setLoading(false)

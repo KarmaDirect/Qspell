@@ -27,6 +27,11 @@ interface CoursesGridProps {
   hasSubscription: boolean
 }
 
+interface UserProgress {
+  progress: number
+  completed?: boolean
+}
+
 const laneIcons: Record<string, string> = {
   top: '🏆',
   jungle: '🌲',
@@ -48,7 +53,7 @@ const laneColors: Record<string, string> = {
 export function CoursesGrid({ hasSubscription }: CoursesGridProps) {
   const [courses, setCourses] = useState<Course[]>([])
   const [loading, setLoading] = useState(true)
-  const [userProgress, setUserProgress] = useState<Record<string, any>>({})
+  const [userProgress, setUserProgress] = useState<Record<string, UserProgress>>({})
 
   useEffect(() => {
     fetchCourses()
@@ -70,7 +75,7 @@ export function CoursesGrid({ hasSubscription }: CoursesGridProps) {
     }
   }
 
-  const getTotalDuration = (lessons: any[]) => {
+  const getTotalDuration = (lessons: Course['lessons']) => {
     return lessons.reduce((acc, lesson) => acc + (lesson.duration_minutes || 0), 0)
   }
 

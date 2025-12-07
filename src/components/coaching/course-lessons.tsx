@@ -6,16 +6,39 @@ import { Badge } from '@/components/ui/badge'
 import { Play, CheckCircle, Clock, Lock } from 'lucide-react'
 import { useState } from 'react'
 
+interface Lesson {
+  id: string
+  title: string
+  description?: string
+  video_url?: string
+  content?: string
+  duration_minutes: number
+  is_preview: boolean
+  order_index: number
+}
+
+interface Course {
+  id: string
+  title: string
+  is_premium: boolean
+  lessons?: Lesson[]
+}
+
+interface LessonProgress {
+  completed: boolean
+  progress?: number
+}
+
 interface CourseLessonsProps {
-  course: any
-  progress: Record<string, any>
+  course: Course
+  progress: Record<string, LessonProgress>
   hasSubscription: boolean
 }
 
 export function CourseLessons({ course, progress, hasSubscription }: CourseLessonsProps) {
-  const [selectedLesson, setSelectedLesson] = useState(course.lessons?.[0] || null)
+  const [selectedLesson, setSelectedLesson] = useState<Lesson | null>(course.lessons?.[0] || null)
 
-  const canAccessLesson = (lesson: any) => {
+  const canAccessLesson = (lesson: Lesson) => {
     return !course.is_premium || hasSubscription || lesson.is_preview
   }
 
@@ -26,7 +49,7 @@ export function CourseLessons({ course, progress, hasSubscription }: CourseLesso
         <Card className="p-4">
           <h3 className="font-semibold mb-4">Leçons ({course.lessons?.length || 0})</h3>
           <div className="space-y-2">
-            {(course.lessons || []).map((lesson: any, index: number) => {
+            {(course.lessons || []).map((lesson: Lesson, index: number) => {
               const isCompleted = progress[lesson.id]?.completed
               const canAccess = canAccessLesson(lesson)
 

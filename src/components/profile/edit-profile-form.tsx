@@ -57,9 +57,9 @@ export function EditProfileForm({ profile, onUpdate }: EditProfileFormProps) {
 
       toast.success('Profil mis à jour avec succès !')
       onUpdate?.()
-    } catch (error: any) {
+    } catch (error) {
       toast.error('Erreur de mise à jour', {
-        description: error.message
+        description: error instanceof Error ? error.message : 'Une erreur est survenue'
       })
     } finally {
       setLoading(false)

@@ -12,7 +12,7 @@ interface AdminAction {
   }
   action_type: string
   target_type?: string
-  details?: any
+  details?: Record<string, unknown>
   created_at: string
 }
 

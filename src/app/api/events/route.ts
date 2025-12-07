@@ -1,5 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createServerClient } from '@/lib/supabase/server'
+import { Database } from '@/lib/types/database.types'
+
+type TournamentEvent = Pick<
+  Database['public']['Tables']['tournaments']['Row'],
+  'id' | 'name' | 'tournament_start' | 'registration_end' | 'description' | 'format' | 'status'
+>
 
 /**
  * GET /api/events
@@ -71,18 +77,18 @@ export async function GET(req: NextRequest) {
       .select(`
         id,
         name,
-        start_date,
+        tournament_start,
         registration_end,
         description,
         format,
         status
       `)
-      .gte('start_date', startDate)
-      .lte('start_date', endDate)
+      .gte('tournament_start', startDate)
+      .lte('tournament_start', endDate)
       .in('status', ['upcoming', 'registration_open', 'in_progress'])
 
     if (tournaments) {
-      tournaments.forEach((tournament: any) => {
+      tournaments.forEach((tournament: TournamentEvent) => {
         // Add registration end date
         if (tournament.registration_end && new Date(tournament.registration_end) >= new Date(startDate)) {
           const regEndDate = new Date(tournament.registration_end)
@@ -97,15 +103,17 @@ export async function GET(req: NextRequest) {
         }
 
         // Add tournament start date
-        const date = new Date(tournament.start_date)
-        events.push({
-          id: `tournament-${tournament.id}`,
-          title: `🎮 ${tournament.name} - Début`,
-          date: tournament.start_date,
-          type: 'tournament',
-          time: date.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }),
-          description: tournament.description || `Tournoi ${tournament.format || ''} - Début de la compétition`,
-        })
+        if (tournament.tournament_start) {
+          const date = new Date(tournament.tournament_start)
+          events.push({
+            id: `tournament-${tournament.id}`,
+            title: `🎮 ${tournament.name} - Début`,
+            date: tournament.tournament_start,
+            type: 'tournament',
+            time: date.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }),
+            description: tournament.description || `Tournoi ${tournament.format || ''} - Début de la compétition`,
+          })
+        }
       })
     }
 

@@ -3,8 +3,9 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Calendar, Users, MapPin, Trophy } from 'lucide-react'
+import { TournamentWithRelations } from '@/lib/types/database.types'
 
-export function TournamentCard({ tournament }: { tournament: any }) {
+export function TournamentCard({ tournament }: { tournament: TournamentWithRelations }) {
   const statusColors: Record<string, string> = {
     draft: 'bg-gray-500',
     upcoming: 'bg-blue-500',
@@ -71,12 +72,12 @@ export function TournamentCard({ tournament }: { tournament: any }) {
           </div>
         )}
 
-        {isInProgress && tournament.start_date && (
+        {isInProgress && tournament.tournament_start && (
           <div className="bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-800 rounded-lg p-2">
             <div className="flex items-center gap-2 text-sm">
               <Trophy className="h-4 w-4 text-green-600 dark:text-green-400" />
               <span className="text-green-800 dark:text-green-200 font-medium">
-                Compétition démarrée le {formatDate(tournament.start_date)}
+                Compétition démarrée le {formatDate(tournament.tournament_start)}
               </span>
             </div>
           </div>

@@ -6,6 +6,15 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[]
 
+// Custom types for complex queries
+export type TournamentWithRelations = Database['public']['Tables']['tournaments']['Row'] & {
+  organizer?: {
+    username: string
+    display_name: string | null
+  }
+  registrations?: Array<{ count: number }>
+}
+
 export interface Database {
   public: {
     Tables: {

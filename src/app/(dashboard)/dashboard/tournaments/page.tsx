@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { TournamentCard } from '@/components/tournament/tournament-card'
 import { Plus, Filter } from 'lucide-react'
+import { TournamentWithRelations } from '@/lib/types/database.types'
 
 export default async function TournamentsPage() {
   const supabase = await createServerClient()
@@ -18,12 +19,12 @@ export default async function TournamentsPage() {
       .from('profiles')
       .select('role')
       .eq('id', user.id)
-      .single()
+      .single<{ role: string }>()
     
-    isAdmin = profile?.role === 'admin' || profile?.role === 'ceo'
+    isAdmin = (profile?.role === 'admin' || profile?.role === 'ceo') ?? false
   }
 
-  const { data: tournaments } = (await supabase
+  const { data: tournaments } = await supabase
     .from('tournaments')
     .select(`
       *,
@@ -31,7 +32,7 @@ export default async function TournamentsPage() {
       registrations:tournament_registrations(count)
     `)
     .in('status', ['upcoming', 'registration_open', 'in_progress'])
-    .order('start_date', { ascending: true })) as { data: any[] | null }
+    .order('tournament_start', { ascending: true }) as { data: TournamentWithRelations[] | null }
 
   return (
     <div className="space-y-6">

@@ -114,7 +114,7 @@ export function CoursesGrid({ hasSubscription }: CoursesGridProps) {
                 !canAccess ? 'opacity-75' : ''
               }`}
             >
-              <div className={`h-32 bg-gradient-to-br ${laneColors[course.lane] || 'from-gray-500 to-gray-600'} relative`}>
+              <div className={`h-32 bg-linear-to-br ${laneColors[course.lane] || 'from-gray-500 to-gray-600'} relative`}>
                 <div className="absolute inset-0 flex items-center justify-center text-6xl">
                   {laneIcons[course.lane] || '📚'}
                 </div>

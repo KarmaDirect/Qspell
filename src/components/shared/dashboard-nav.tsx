@@ -78,7 +78,7 @@ export function DashboardNav() {
           {/* Logo */}
           <Link href="/dashboard" className="flex items-center gap-2">
             <span className="text-2xl">⚡</span>
-            <span className="font-bold text-lg bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent hidden sm:inline">
+            <span className="font-bold text-lg bg-linear-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent hidden sm:inline">
               QSPELL
             </span>
           </Link>

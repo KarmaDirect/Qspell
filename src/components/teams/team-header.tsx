@@ -25,7 +25,7 @@ export function TeamHeader({ team, isCaptain }: TeamHeaderProps) {
   return (
     <Card className="p-8">
       <div className="flex items-start gap-6">
-        <div className="w-24 h-24 rounded-xl bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center text-3xl font-bold flex-shrink-0">
+        <div className="w-24 h-24 rounded-xl bg-linear-to-br from-primary/20 to-primary/10 flex items-center justify-center text-3xl font-bold flex-shrink-0">
           {team.tag}
         </div>
         

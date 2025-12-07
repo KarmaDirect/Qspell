@@ -85,7 +85,7 @@ export function TeamList() {
           <Card className="p-6 hover:border-primary transition-colors cursor-pointer">
             <div className="flex items-start justify-between mb-4">
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center text-lg font-bold">
+                <div className="w-12 h-12 rounded-lg bg-linear-to-br from-primary/20 to-primary/10 flex items-center justify-center text-lg font-bold">
                   {team.tag}
                 </div>
                 <div>

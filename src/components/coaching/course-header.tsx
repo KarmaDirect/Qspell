@@ -43,7 +43,7 @@ export function CourseHeader({ course, hasSubscription, progress }: CourseHeader
   const overallProgress = totalLessons > 0 ? Math.round((completedLessons / totalLessons) * 100) : 0
 
   return (
-    <div className={`rounded-2xl bg-gradient-to-br ${laneColors[course.lane] || 'from-gray-500 to-gray-600'} p-8 text-white mb-8`}>
+    <div className={`rounded-2xl bg-linear-to-br ${laneColors[course.lane] || 'from-gray-500 to-gray-600'} p-8 text-white mb-8`}>
       <div className="max-w-3xl">
         <Badge variant="secondary" className="mb-4 bg-white/20 text-white border-white/30">
           {course.lane.toUpperCase()}

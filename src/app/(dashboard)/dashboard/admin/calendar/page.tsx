@@ -20,7 +20,7 @@ export default async function AdminCalendarPage() {
     .from('profiles')
     .select('role')
     .eq('id', user.id)
-    .single()
+    .single<{ role: string }>()
 
   if (!profile || !['admin', 'ceo'].includes(profile.role)) {
     redirect('/dashboard')

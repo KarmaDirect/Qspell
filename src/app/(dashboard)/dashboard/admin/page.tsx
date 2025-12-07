@@ -20,7 +20,7 @@ export default async function AdminDashboardPage() {
     .from('profiles')
     .select('role')
     .eq('id', user.id)
-    .single()
+    .single<{ role: string }>()
 
   if (!profile || !['admin', 'ceo'].includes(profile.role)) {
     redirect('/dashboard')
@@ -29,7 +29,7 @@ export default async function AdminDashboardPage() {
   return (
     <div className="space-y-8">
       {/* Header */}
-      <div className="bg-gradient-to-r from-red-600 to-orange-600 rounded-lg p-8 text-white">
+      <div className="bg-linear-to-r from-red-600 to-orange-600 rounded-lg p-8 text-white">
         <h1 className="text-3xl font-bold mb-2">
           Tableau de bord Admin
         </h1>

@@ -3,13 +3,13 @@ import { LoginForm } from '@/components/auth/login-form'
 
 export default function LoginPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-950 via-slate-900 to-purple-950">
+    <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-blue-950 via-slate-900 to-purple-950">
       <div className="w-full max-w-md p-8">
         <div className="bg-card border rounded-lg shadow-2xl p-8">
           <div className="text-center mb-8">
             <div className="flex items-center justify-center gap-3 mb-4">
               <span className="text-4xl">⚡</span>
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+              <h1 className="text-3xl font-bold bg-linear-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
                 QSPELL
               </h1>
               <span className="text-4xl">⚡</span>

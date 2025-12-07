@@ -49,7 +49,7 @@ export function SubscriptionCard() {
 
   return (
     <Card className="relative overflow-hidden border-2 border-primary/50">
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-purple-500/5" />
+      <div className="absolute inset-0 bg-linear-to-br from-primary/5 to-purple-500/5" />
       
       <div className="relative p-8">
         <div className="flex items-start justify-between mb-6">

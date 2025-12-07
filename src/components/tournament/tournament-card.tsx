@@ -43,7 +43,7 @@ export function TournamentCard({ tournament }: { tournament: TournamentWithRelat
     <Card className="overflow-hidden hover:border-primary transition-colors">
       {/* Banner */}
       <div 
-        className="h-32 bg-gradient-to-r from-blue-600 to-purple-600 relative"
+        className="h-32 bg-linear-to-r from-blue-600 to-purple-600 relative"
         style={tournament.banner_url ? { 
           backgroundImage: `url(${tournament.banner_url})`, 
           backgroundSize: 'cover',

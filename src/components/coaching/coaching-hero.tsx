@@ -10,7 +10,7 @@ interface CoachingHeroProps {
 
 export function CoachingHero({ hasSubscription }: CoachingHeroProps) {
   return (
-    <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-purple-600 via-blue-600 to-purple-800 p-12 text-white">
+    <div className="relative overflow-hidden rounded-2xl bg-linear-to-br from-purple-600 via-blue-600 to-purple-800 p-12 text-white">
       <div className="absolute inset-0 bg-grid-white/10 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))]" />
       
       <div className="relative z-10">

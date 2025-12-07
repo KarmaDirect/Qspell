@@ -79,7 +79,7 @@ export function TeamLeaderboard() {
               {getRankIcon(entry.rank)}
             </div>
 
-            <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center text-lg font-bold flex-shrink-0">
+            <div className="w-12 h-12 rounded-lg bg-linear-to-br from-primary/20 to-primary/10 flex items-center justify-center text-lg font-bold flex-shrink-0">
               {entry.team.tag}
             </div>
 

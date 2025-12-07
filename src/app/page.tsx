@@ -5,13 +5,13 @@ import { Calendar } from '@/components/calendar/calendar'
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-950 via-slate-900 to-purple-950">
+    <div className="min-h-screen bg-linear-to-br from-blue-950 via-slate-900 to-purple-950">
       {/* Header */}
       <header className="border-b border-white/10 backdrop-blur-sm">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <div className="flex items-center gap-3">
             <div className="text-3xl">⚡</div>
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+            <h1 className="text-2xl font-bold bg-linear-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
               QSPELL
             </h1>
           </div>
@@ -31,7 +31,7 @@ export default function HomePage() {
         <div className="mb-8">
           <div className="inline-flex items-center gap-3 mb-6">
             <span className="text-6xl">⚡</span>
-            <h2 className="text-6xl md:text-7xl font-bold bg-gradient-to-r from-purple-400 via-blue-400 to-cyan-400 bg-clip-text text-transparent">
+            <h2 className="text-6xl md:text-7xl font-bold bg-linear-to-r from-purple-400 via-blue-400 to-cyan-400 bg-clip-text text-transparent">
               QSPELL
             </h2>
             <span className="text-6xl">⚡</span>
@@ -112,7 +112,7 @@ export default function HomePage() {
 
       {/* CTA Section */}
       <section className="container mx-auto px-4 py-20 text-center">
-        <div className="bg-gradient-to-r from-purple-600 to-blue-600 rounded-2xl p-12">
+        <div className="bg-linear-to-r from-purple-600 to-blue-600 rounded-2xl p-12">
           <div className="flex items-center justify-center gap-3 mb-4">
             <span className="text-5xl">⚡</span>
             <h3 className="text-4xl font-bold">Rejoins les Q Gods</h3>

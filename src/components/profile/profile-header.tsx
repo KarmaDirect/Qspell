@@ -21,7 +21,7 @@ export function ProfileHeader({ profile }: { profile: Profile | null }) {
     <div className="bg-card border rounded-lg overflow-hidden">
       {/* Banner */}
       <div 
-        className="h-32 bg-gradient-to-r from-blue-600 to-purple-600"
+        className="h-32 bg-linear-to-r from-blue-600 to-purple-600"
         style={profile.banner_url ? { backgroundImage: `url(${profile.banner_url})`, backgroundSize: 'cover' } : {}}
       />
 

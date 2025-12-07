@@ -28,7 +28,7 @@ export default async function DashboardPage() {
   return (
     <div className="space-y-8">
       {/* Welcome Section */}
-      <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg p-8 text-white">
+      <div className="bg-linear-to-r from-blue-600 to-purple-600 rounded-lg p-8 text-white">
         <h1 className="text-3xl font-bold mb-2">
           Bienvenue, {profile ? (profile.display_name || profile.username) : 'Invocateur'} !
         </h1>

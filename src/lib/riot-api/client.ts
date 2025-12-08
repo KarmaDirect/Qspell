@@ -78,6 +78,16 @@ export interface Match {
     platformId: string
     queueId: number
     participants: MatchParticipant[]
+    teams: Array<{
+      teamId: number
+      win: boolean
+      objectives: {
+        baron?: { kills: number }
+        dragon?: { kills: number }
+        inhibitor?: { kills: number }
+        tower?: { kills: number }
+      }
+    }>
   }
 }
 
@@ -90,7 +100,36 @@ export interface MatchParticipant {
   assists: number
   win: boolean
   teamPosition: string
-  summonerName: string
+  summonerName?: string // May be deprecated, use riotIdGameName instead
+  riotIdGameName?: string
+  riotIdTagline?: string
+  teamId: number
+  championLevel: number
+  item0: number
+  item1: number
+  item2: number
+  item3: number
+  item4: number
+  item5: number
+  item6: number
+  summoner1Id: number
+  summoner2Id: number
+  perks: {
+    styles: Array<{
+      style: number
+      selections: Array<{
+        perk: number
+        var1: number
+        var2: number
+        var3: number
+      }>
+    }>
+  }
+  totalMinionsKilled: number
+  neutralMinionsKilled: number
+  goldEarned: number
+  totalDamageDealtToChampions: number
+  visionScore: number
 }
 
 async function riotApiRequest<T>(url: string, cacheKey: string, cacheDuration: number): Promise<T> {

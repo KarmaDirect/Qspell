@@ -511,12 +511,474 @@ export interface Database {
           created_at?: string
         }
       }
+      user_wallets: {
+        Row: {
+          id: string
+          user_id: string
+          qp_balance: number
+          cash_balance: number
+          total_qp_purchased: number
+          total_cash_earned: number
+          total_cash_withdrawn: number
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          qp_balance?: number
+          cash_balance?: number
+          total_qp_purchased?: number
+          total_cash_earned?: number
+          total_cash_withdrawn?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          qp_balance?: number
+          cash_balance?: number
+          total_qp_purchased?: number
+          total_cash_earned?: number
+          total_cash_withdrawn?: number
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      qp_transactions: {
+        Row: {
+          id: string
+          user_id: string
+          type: 'purchase' | 'spend' | 'refund' | 'gift' | 'subscription_bonus' | 'welcome_bonus'
+          amount: number
+          description: string | null
+          reference_id: string | null
+          reference_type: string | null
+          metadata: Json
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          type: 'purchase' | 'spend' | 'refund' | 'gift' | 'subscription_bonus' | 'welcome_bonus'
+          amount: number
+          description?: string | null
+          reference_id?: string | null
+          reference_type?: string | null
+          metadata?: Json
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          type?: 'purchase' | 'spend' | 'refund' | 'gift' | 'subscription_bonus' | 'welcome_bonus'
+          amount?: number
+          description?: string | null
+          reference_id?: string | null
+          reference_type?: string | null
+          metadata?: Json
+          created_at?: string
+        }
+      }
+      cash_transactions: {
+        Row: {
+          id: string
+          user_id: string
+          type: 'tournament_win' | 'withdrawal' | 'refund' | 'coaching_payout'
+          amount: number
+          status: 'pending' | 'completed' | 'failed' | 'cancelled'
+          tournament_id: string | null
+          withdrawal_request_id: string | null
+          description: string | null
+          metadata: Json
+          created_at: string
+          processed_at: string | null
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          type: 'tournament_win' | 'withdrawal' | 'refund' | 'coaching_payout'
+          amount: number
+          status?: 'pending' | 'completed' | 'failed' | 'cancelled'
+          tournament_id?: string | null
+          withdrawal_request_id?: string | null
+          description?: string | null
+          metadata?: Json
+          created_at?: string
+          processed_at?: string | null
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          type?: 'tournament_win' | 'withdrawal' | 'refund' | 'coaching_payout'
+          amount?: number
+          status?: 'pending' | 'completed' | 'failed' | 'cancelled'
+          tournament_id?: string | null
+          withdrawal_request_id?: string | null
+          description?: string | null
+          metadata?: Json
+          created_at?: string
+          processed_at?: string | null
+        }
+      }
+      qp_packages: {
+        Row: {
+          id: string
+          name: string
+          qp_amount: number
+          price_eur: number
+          bonus_qp: number
+          is_active: boolean
+          display_order: number
+          stripe_price_id: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          qp_amount: number
+          price_eur: number
+          bonus_qp?: number
+          is_active?: boolean
+          display_order?: number
+          stripe_price_id?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          qp_amount?: number
+          price_eur?: number
+          bonus_qp?: number
+          is_active?: boolean
+          display_order?: number
+          stripe_price_id?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      subscriptions: {
+        Row: {
+          id: string
+          user_id: string
+          plan: 'premium'
+          price_monthly: number
+          qp_monthly: number
+          status: 'active' | 'cancelled' | 'expired' | 'past_due'
+          current_period_start: string
+          current_period_end: string
+          stripe_subscription_id: string | null
+          stripe_customer_id: string | null
+          cancel_at_period_end: boolean
+          cancelled_at: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          plan?: 'premium'
+          price_monthly?: number
+          qp_monthly?: number
+          status?: 'active' | 'cancelled' | 'expired' | 'past_due'
+          current_period_start: string
+          current_period_end: string
+          stripe_subscription_id?: string | null
+          stripe_customer_id?: string | null
+          cancel_at_period_end?: boolean
+          cancelled_at?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          plan?: 'premium'
+          price_monthly?: number
+          qp_monthly?: number
+          status?: 'active' | 'cancelled' | 'expired' | 'past_due'
+          current_period_start?: string
+          current_period_end?: string
+          stripe_subscription_id?: string | null
+          stripe_customer_id?: string | null
+          cancel_at_period_end?: boolean
+          cancelled_at?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      subscription_benefits: {
+        Row: {
+          id: string
+          plan: 'premium'
+          benefit_key: string
+          benefit_value: Json
+          description: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          plan?: 'premium'
+          benefit_key: string
+          benefit_value: Json
+          description?: string | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          plan?: 'premium'
+          benefit_key?: string
+          benefit_value?: Json
+          description?: string | null
+          created_at?: string
+        }
+      }
+      products: {
+        Row: {
+          id: string
+          name: string
+          type: 'ai_analysis' | 'tournament_entry' | 'formation' | 'coaching_session' | 'cosmetic' | 'booster_xp'
+          price_qp: number | null
+          price_eur: number | null
+          description: string | null
+          is_available_free: boolean
+          is_available_premium: boolean
+          metadata: Json
+          is_active: boolean
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          type: 'ai_analysis' | 'tournament_entry' | 'formation' | 'coaching_session' | 'cosmetic' | 'booster_xp'
+          price_qp?: number | null
+          price_eur?: number | null
+          description?: string | null
+          is_available_free?: boolean
+          is_available_premium?: boolean
+          metadata?: Json
+          is_active?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          type?: 'ai_analysis' | 'tournament_entry' | 'formation' | 'coaching_session' | 'cosmetic' | 'booster_xp'
+          price_qp?: number | null
+          price_eur?: number | null
+          description?: string | null
+          is_available_free?: boolean
+          is_available_premium?: boolean
+          metadata?: Json
+          is_active?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      tournament_entries: {
+        Row: {
+          id: string
+          tournament_id: string
+          team_id: string
+          entry_fee_qp: number
+          status: 'pending' | 'accepted' | 'rejected' | 'cancelled'
+          qp_transaction_id: string | null
+          paid_at: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          tournament_id: string
+          team_id: string
+          entry_fee_qp: number
+          status?: 'pending' | 'accepted' | 'rejected' | 'cancelled'
+          qp_transaction_id?: string | null
+          paid_at?: string | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          tournament_id?: string
+          team_id?: string
+          entry_fee_qp?: number
+          status?: 'pending' | 'accepted' | 'rejected' | 'cancelled'
+          qp_transaction_id?: string | null
+          paid_at?: string | null
+          created_at?: string
+        }
+      }
+      tournament_prize_pool: {
+        Row: {
+          id: string
+          tournament_id: string
+          total_pool: number
+          distribution: Json
+          paid_out: boolean
+          paid_at: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          tournament_id: string
+          total_pool?: number
+          distribution?: Json
+          paid_out?: boolean
+          paid_at?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          tournament_id?: string
+          total_pool?: number
+          distribution?: Json
+          paid_out?: boolean
+          paid_at?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      withdrawal_requests: {
+        Row: {
+          id: string
+          user_id: string
+          amount: number
+          platform_fee: number
+          net_amount: number
+          method: 'paypal' | 'bank' | 'gift_card'
+          details: Json
+          status: 'pending' | 'processing' | 'completed' | 'rejected' | 'cancelled'
+          admin_notes: string | null
+          kyc_required: boolean
+          kyc_verified: boolean
+          created_at: string
+          processed_at: string | null
+          processed_by: string | null
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          amount: number
+          platform_fee: number
+          net_amount: number
+          method: 'paypal' | 'bank' | 'gift_card'
+          details: Json
+          status?: 'pending' | 'processing' | 'completed' | 'rejected' | 'cancelled'
+          admin_notes?: string | null
+          kyc_required?: boolean
+          kyc_verified?: boolean
+          created_at?: string
+          processed_at?: string | null
+          processed_by?: string | null
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          amount?: number
+          platform_fee?: number
+          net_amount?: number
+          method?: 'paypal' | 'bank' | 'gift_card'
+          details?: Json
+          status?: 'pending' | 'processing' | 'completed' | 'rejected' | 'cancelled'
+          admin_notes?: string | null
+          kyc_required?: boolean
+          kyc_verified?: boolean
+          created_at?: string
+          processed_at?: string | null
+          processed_by?: string | null
+        }
+      }
+      formation_purchases: {
+        Row: {
+          id: string
+          formation_id: string
+          user_id: string
+          price_qp: number | null
+          qp_transaction_id: string | null
+          is_premium_access: boolean
+          purchased_at: string
+        }
+        Insert: {
+          id?: string
+          formation_id: string
+          user_id: string
+          price_qp?: number | null
+          qp_transaction_id?: string | null
+          is_premium_access?: boolean
+          purchased_at?: string
+        }
+        Update: {
+          id?: string
+          formation_id?: string
+          user_id?: string
+          price_qp?: number | null
+          qp_transaction_id?: string | null
+          is_premium_access?: boolean
+          purchased_at?: string
+        }
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      debit_qp: {
+        Args: {
+          p_user_id: string
+          p_amount: number
+          p_type: 'purchase' | 'spend' | 'refund' | 'gift' | 'subscription_bonus' | 'welcome_bonus'
+          p_description?: string | null
+          p_reference_id?: string | null
+          p_reference_type?: string | null
+        }
+        Returns: string
+      }
+      credit_qp: {
+        Args: {
+          p_user_id: string
+          p_amount: number
+          p_type: 'purchase' | 'spend' | 'refund' | 'gift' | 'subscription_bonus' | 'welcome_bonus'
+          p_description?: string | null
+          p_reference_id?: string | null
+          p_reference_type?: string | null
+        }
+        Returns: string
+      }
+      credit_cash: {
+        Args: {
+          p_user_id: string
+          p_amount: number
+          p_type: 'tournament_win' | 'withdrawal' | 'refund' | 'coaching_payout'
+          p_description?: string | null
+          p_tournament_id?: string | null
+        }
+        Returns: string
+      }
+      debit_cash: {
+        Args: {
+          p_user_id: string
+          p_amount: number
+        }
+        Returns: boolean
+      }
+      has_premium_subscription: {
+        Args: {
+          p_user_id: string
+        }
+        Returns: boolean
+      }
+      calculate_qp_bonus: {
+        Args: {
+          p_price_eur: number
+        }
+        Returns: number
+      }
     }
     Enums: {
       [_ in never]: never

@@ -4,6 +4,7 @@ import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
 import { Trophy, TrendingUp, Target } from 'lucide-react'
+import Image from 'next/image'
 import type { Database } from '@/lib/types/database.types'
 
 type RiotAccount = Database['public']['Tables']['riot_accounts']['Row']
@@ -22,6 +23,19 @@ const RANK_COLORS: Record<string, string> = {
   CHALLENGER: 'bg-amber-500',
 }
 
+const RANK_EMBLEMS: Record<string, string> = {
+  IRON: '/ranklogo/7574-iron.png',
+  BRONZE: '/ranklogo/1184-bronze.png',
+  SILVER: '/ranklogo/7455-silver.png',
+  GOLD: '/ranklogo/1053-gold.png',
+  PLATINUM: '/ranklogo/3978-platinum.png',
+  EMERALD: '/ranklogo/emerald.png.png',
+  DIAMOND: '/ranklogo/1053-diamond.png',
+  MASTER: '/ranklogo/9231-master.png',
+  GRANDMASTER: '/ranklogo/grandmaster.png.png',
+  CHALLENGER: '/ranklogo/9476-challenger.png',
+}
+
 export function PlayerStatsCard({ 
   account, 
   stats 
@@ -33,10 +47,12 @@ export function PlayerStatsCard({
   const rankedFlex = stats.find(s => s.queue_type === 'RANKED_FLEX_SR')
 
   return (
-    <Card className="p-6">
-      <div className="flex items-center gap-2 mb-6">
-        <Trophy className="h-5 w-5 text-primary" />
-        <h2 className="text-xl font-semibold">Statistiques Ranked</h2>
+    <Card className="p-6 bg-[#141414] border-[#1a1a1a]">
+      <div className="flex items-center gap-3 mb-6">
+        <div className="p-2 bg-[#c8ff00]/10 rounded-lg">
+          <Trophy className="h-5 w-5 text-[#c8ff00]" />
+        </div>
+        <h2 className="text-xl font-bold text-white">Statistiques Ranked</h2>
       </div>
 
       <div className="grid md:grid-cols-2 gap-6">
@@ -55,17 +71,17 @@ export function PlayerStatsCard({
 
       {/* Champion Mastery */}
       {rankedSolo?.champion_mastery && (
-        <div className="mt-6 pt-6 border-t">
-          <h3 className="font-semibold mb-4 flex items-center gap-2">
-            <Target className="h-4 w-4" />
+        <div className="mt-8 pt-6 border-t border-[#1a1a1a]">
+          <h3 className="font-semibold mb-4 flex items-center gap-2 text-white">
+            <Target className="h-4 w-4 text-[#c8ff00]" />
             Champions maîtrisés
           </h3>
           <div className="grid grid-cols-3 md:grid-cols-5 gap-3">
             {/* Placeholder - would need champion icons from Data Dragon */}
             <div className="text-center">
-              <div className="h-16 w-16 bg-muted rounded-lg mx-auto mb-2" />
-              <p className="text-xs font-medium">Champion</p>
-              <p className="text-xs text-muted-foreground">M7</p>
+              <div className="h-16 w-16 bg-[#1a1a1a] rounded-lg mx-auto mb-2 border border-[#1a1a1a]" />
+              <p className="text-xs font-medium text-white">Champion</p>
+              <p className="text-xs text-[#666]">M7</p>
             </div>
           </div>
         </div>
@@ -83,9 +99,10 @@ function RankedStatsSection({
 }) {
   if (!stat || !stat.tier) {
     return (
-      <div>
-        <h3 className="font-semibold mb-3">{title}</h3>
-        <div className="text-center py-8 text-muted-foreground">
+      <div className="bg-[#0a0a0a] border border-[#1a1a1a] rounded-lg p-5">
+        <h3 className="font-semibold mb-4 text-[#888] text-sm uppercase tracking-wide">{title}</h3>
+        <div className="text-center py-12 text-[#666]">
+          <Trophy className="h-12 w-12 mx-auto mb-3 opacity-30" />
           <p className="text-sm">Non classé</p>
         </div>
       </div>
@@ -94,51 +111,82 @@ function RankedStatsSection({
 
   const totalGames = (stat.wins || 0) + (stat.losses || 0)
   const winrate = totalGames > 0 ? Math.round(((stat.wins || 0) / totalGames) * 100) : 0
-  const rankColor = RANK_COLORS[stat.tier] || 'bg-gray-500'
+  const tierKey = (stat.tier || '').trim().toUpperCase()
+  const rankColor = RANK_COLORS[tierKey] || 'bg-gray-500'
+  const emblem = RANK_EMBLEMS[tierKey]
 
   return (
-    <div>
-      <h3 className="font-semibold mb-3">{title}</h3>
+    <div className="bg-[#0a0a0a] border border-[#1a1a1a] rounded-lg p-5 hover:border-[#c8ff00]/20 transition-colors">
+      <h3 className="font-semibold mb-4 text-[#888] text-sm uppercase tracking-wide">{title}</h3>
       
-      <div className="space-y-4">
+      <div className="space-y-5">
         {/* Rank Badge */}
-        <div className="flex items-center gap-3">
-          <div className={`h-16 w-16 rounded-lg ${rankColor} flex items-center justify-center text-white font-bold`}>
-            <div className="text-center">
-              <div className="text-xs">{stat.tier}</div>
-              <div className="text-xl">{stat.rank}</div>
-            </div>
+        <div className="flex flex-col items-center gap-4">
+          {/* Icon above text */}
+          <div className="relative w-28 h-28 flex-shrink-0">
+            {emblem ? (
+              <Image
+                src={emblem}
+                alt={`${stat.tier} emblem`}
+                fill
+                className="object-contain drop-shadow-lg"
+                sizes="112px"
+                priority
+              />
+            ) : (
+              <div className={`w-full h-full rounded-lg ${rankColor} flex items-center justify-center text-white font-bold shadow-lg`}>
+                <div className="text-center">
+                  <div className="text-xs">{stat.tier}</div>
+                  <div className="text-xl">{stat.rank}</div>
+                </div>
+              </div>
+            )}
           </div>
-          <div>
-            <p className="font-semibold">{stat.tier} {stat.rank}</p>
-            <p className="text-sm text-muted-foreground">{stat.league_points} LP</p>
+          {/* Rank text below icon */}
+          <div className="text-center">
+            <p className="font-bold text-xl text-white mb-1">{stat.tier} {stat.rank}</p>
+            <p className="text-sm text-[#c8ff00] font-medium">{stat.league_points} LP</p>
           </div>
         </div>
 
         {/* Win/Loss */}
-        <div>
-          <div className="flex justify-between text-sm mb-1">
-            <span className="text-muted-foreground">Winrate</span>
-            <span className="font-semibold">{winrate}%</span>
+        <div className="bg-[#141414] rounded-lg p-4 border border-[#1a1a1a]">
+          <div className="flex justify-between items-center mb-2">
+            <span className="text-[#666] text-sm">Winrate</span>
+            <span className="font-bold text-white text-lg">{winrate}%</span>
           </div>
-          <Progress value={winrate} className="h-2" />
-          <div className="flex justify-between text-xs text-muted-foreground mt-1">
-            <span>{stat.wins}V</span>
-            <span>{stat.losses}D</span>
+          <div className="relative h-2 bg-[#0a0a0a] rounded-full overflow-hidden mb-2">
+            <div 
+              className="h-full bg-gradient-to-r from-[#c8ff00] to-[#b8ef00] rounded-full transition-all duration-500"
+              style={{ width: `${winrate}%` }}
+            />
+          </div>
+          <div className="flex justify-between text-xs text-[#666]">
+            <span className="flex items-center gap-1">
+              <span className="text-[#c8ff00] font-semibold">{stat.wins}</span>
+              <span>V</span>
+            </span>
+            <span className="flex items-center gap-1">
+              <span className="text-red-400 font-semibold">{stat.losses}</span>
+              <span>D</span>
+            </span>
           </div>
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-2 gap-2 text-sm">
-          <div className="bg-muted rounded p-2">
-            <div className="text-muted-foreground text-xs">Total</div>
-            <div className="font-semibold">{totalGames} games</div>
+        <div className="grid grid-cols-2 gap-3">
+          <div className="bg-[#141414] border border-[#1a1a1a] rounded-lg p-3">
+            <div className="text-[#666] text-xs mb-1">Total</div>
+            <div className="font-bold text-white text-lg">{totalGames}</div>
+            <div className="text-[#666] text-xs mt-0.5">games</div>
           </div>
-          <div className="bg-muted rounded p-2">
-            <div className="text-muted-foreground text-xs">Form</div>
-            <div className="font-semibold flex items-center gap-1">
-              <TrendingUp className="h-3 w-3" />
-              {winrate > 50 ? 'En forme' : 'En baisse'}
+          <div className="bg-[#141414] border border-[#1a1a1a] rounded-lg p-3">
+            <div className="text-[#666] text-xs mb-1">Form</div>
+            <div className="font-bold flex items-center gap-1.5 text-white">
+              <TrendingUp className={`h-4 w-4 ${winrate > 50 ? 'text-[#c8ff00]' : 'text-red-400'}`} />
+              <span className={winrate > 50 ? 'text-[#c8ff00]' : 'text-red-400'}>
+                {winrate > 50 ? 'En forme' : 'En baisse'}
+              </span>
             </div>
           </div>
         </div>

@@ -1,131 +1,169 @@
+/**
+ * Middleware et helpers pour la vérification des permissions
+ * et la protection des routes basées sur les rôles
+ */
+
 import { createServerClient } from '@/lib/supabase/server'
-import type { Database } from '@/lib/types/database.types'
+import { redirect } from 'next/navigation'
+import { UserRole, Permission, hasPermission, isAdminRole } from './roles'
 
-type Profile = Database['public']['Tables']['profiles']['Row']
-
-export async function getCurrentUser() {
+/**
+ * Récupère le profil et le rôle de l'utilisateur connecté
+ */
+export async function getCurrentUserRole(): Promise<{
+  userId: string
+  role: UserRole
+} | null> {
   const supabase = await createServerClient()
   
   const {
     data: { user },
   } = await supabase.auth.getUser()
 
-  return user
-}
-
-export async function getCurrentProfile(): Promise<Profile | null> {
-  const supabase = await createServerClient()
-  
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-
-  if (!user) return null
+  if (!user) {
+    return null
+  }
 
   const { data: profile } = await supabase
     .from('profiles')
-    .select('*')
+    .select('role')
     .eq('id', user.id)
-    .single()
+    .single<{ role: UserRole }>()
 
-  return profile as Profile | null
-}
-
-export async function isAdmin(): Promise<boolean> {
-  const profile = await getCurrentProfile()
-  
-  if (!profile) return false
-  
-  return profile.role === 'admin' && !profile.is_banned
-}
-
-export async function isModeratorOrAdmin(): Promise<boolean> {
-  const profile = await getCurrentProfile()
-  
-  if (!profile) return false
-  
-  return (profile.role === 'admin' || profile.role === 'moderator') && !profile.is_banned
-}
-
-export async function isUserBanned(): Promise<{
-  banned: boolean
-  reason?: string
-  until?: string
-}> {
-  const profile = await getCurrentProfile()
-  
   if (!profile) {
-    return { banned: false }
-  }
-
-  // Check if banned
-  if (!profile.is_banned) {
-    return { banned: false }
-  }
-
-  // Check if temporary ban has expired
-  if (profile.banned_until) {
-    const banExpiry = new Date(profile.banned_until)
-    const now = new Date()
-    
-    if (now > banExpiry) {
-      // Ban has expired, unban the user
-      const supabase = await createServerClient()
-      await supabase
-        .from('profiles')
-        .update({
-          is_banned: false,
-          ban_reason: null,
-          banned_until: null,
-        })
-        .eq('id', profile.id)
-      
-      return { banned: false }
-    }
+    return null
   }
 
   return {
-    banned: true,
-    reason: profile.ban_reason || undefined,
-    until: profile.banned_until || undefined,
+    userId: user.id,
+    role: profile.role,
   }
 }
 
+/**
+ * Vérifie si l'utilisateur connecté a une permission spécifique
+ */
+export async function checkPermission(permission: Permission): Promise<boolean> {
+  const userRole = await getCurrentUserRole()
+  
+  if (!userRole) {
+    return false
+  }
+
+  return hasPermission(userRole.role, permission)
+}
+
+/**
+ * Vérifie si l'utilisateur connecté a un des rôles spécifiés
+ */
+export async function checkRole(allowedRoles: UserRole[]): Promise<boolean> {
+  const userRole = await getCurrentUserRole()
+  
+  if (!userRole) {
+    return false
+  }
+
+  return allowedRoles.includes(userRole.role)
+}
+
+/**
+ * Vérifie si l'utilisateur connecté est un admin (admin ou CEO)
+ */
+export async function checkIsAdmin(): Promise<boolean> {
+  const userRole = await getCurrentUserRole()
+  
+  if (!userRole) {
+    return false
+  }
+
+  return isAdminRole(userRole.role)
+}
+
+/**
+ * Middleware: Require une permission spécifique
+ * Redirige vers /dashboard si l'utilisateur n'a pas la permission
+ */
+export async function requirePermission(permission: Permission) {
+  const hasRequiredPermission = await checkPermission(permission)
+  
+  if (!hasRequiredPermission) {
+    redirect('/dashboard')
+  }
+}
+
+/**
+ * Middleware: Require un des rôles spécifiés
+ * Redirige vers /dashboard si l'utilisateur n'a pas le bon rôle
+ */
+export async function requireRole(allowedRoles: UserRole[]) {
+  const hasRequiredRole = await checkRole(allowedRoles)
+  
+  if (!hasRequiredRole) {
+    redirect('/dashboard')
+  }
+}
+
+/**
+ * Middleware: Require un rôle admin (admin ou CEO)
+ * Redirige vers /dashboard si l'utilisateur n'est pas admin
+ */
+export async function requireAdmin() {
+  const isAdmin = await checkIsAdmin()
+  
+  if (!isAdmin) {
+    redirect('/dashboard')
+  }
+}
+
+/**
+ * Middleware: Require l'authentification
+ * Redirige vers /login si l'utilisateur n'est pas connecté
+ */
 export async function requireAuth() {
-  const user = await getCurrentUser()
+  const supabase = await createServerClient()
   
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
   if (!user) {
-    throw new Error('Unauthorized')
+    redirect('/login')
   }
-  
-  const banStatus = await isUserBanned()
-  if (banStatus.banned) {
-    throw new Error('User is banned')
-  }
-  
+
   return user
 }
 
-export async function requireAdmin() {
-  await requireAuth()
+/**
+ * Helper: Vérifie si l'utilisateur peut accéder à une ressource
+ * basé sur la propriété (ownership)
+ */
+export async function checkOwnership(resourceOwnerId: string): Promise<boolean> {
+  const userRole = await getCurrentUserRole()
   
-  const adminStatus = await isAdmin()
-  
-  if (!adminStatus) {
-    throw new Error('Admin access required')
+  if (!userRole) {
+    return false
   }
-  
-  return true
+
+  // Les admins ont toujours accès
+  if (isAdminRole(userRole.role)) {
+    return true
+  }
+
+  // Sinon, vérifier la propriété
+  return userRole.userId === resourceOwnerId
 }
 
-export async function requireModeratorOrAdmin() {
-  await requireAuth()
-  
-  const modStatus = await isModeratorOrAdmin()
-  
-  if (!modStatus) {
-    throw new Error('Moderator or admin access required')
-  }
-  
-  return true
+/**
+ * Helper: Vérifie si l'utilisateur peut modifier une ressource
+ * Soit il est propriétaire, soit il est admin
+ */
+export async function canModifyResource(resourceOwnerId: string): Promise<boolean> {
+  return await checkOwnership(resourceOwnerId)
+}
+
+/**
+ * Type guard pour vérifier qu'une valeur est un UserRole valide
+ */
+export function isValidUserRole(role: string): role is UserRole {
+  return ['user', 'coach', 'tournament_organizer', 'manager', 'admin', 'ceo'].includes(role)
 }

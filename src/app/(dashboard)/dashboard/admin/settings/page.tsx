@@ -2,7 +2,7 @@ import { createServerClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Settings, Database, Shield, Bell } from 'lucide-react'
+import { Settings, Database, Shield, Globe, Server } from 'lucide-react'
 
 export default async function AdminSettingsPage() {
   const supabase = await createServerClient()
@@ -15,7 +15,6 @@ export default async function AdminSettingsPage() {
     redirect('/login')
   }
 
-  // Check if user is CEO
   const { data: profile } = await supabase
     .from('profiles')
     .select('role')
@@ -28,87 +27,100 @@ export default async function AdminSettingsPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-2">
-        <h1 className="text-3xl font-bold">Paramètres</h1>
-        <Badge variant="destructive">CEO uniquement</Badge>
+      <div>
+        <Badge className="mb-3 bg-[#c8ff00]/10 text-[#c8ff00] border-[#c8ff00]/20">
+          <Settings className="h-3 w-3 mr-1" />
+          CEO
+        </Badge>
+        <h1 className="text-2xl font-bold text-white mb-1">Paramètres</h1>
+        <p className="text-[#666]">Configuration système (CEO uniquement)</p>
       </div>
-      <p className="text-muted-foreground">
-        Configuration système et paramètres avancés
-      </p>
 
-      <div className="grid gap-6 md:grid-cols-2">
-        <Card className="p-6">
+      <div className="grid gap-4 md:grid-cols-2">
+        <Card className="p-5 bg-[#141414] border-[#1a1a1a]">
           <div className="flex items-center gap-3 mb-4">
-            <Database className="h-8 w-8 text-primary" />
-            <h3 className="text-xl font-semibold">Base de données</h3>
-          </div>
-          <p className="text-muted-foreground mb-4">
-            Gestion des migrations et de la base de données Supabase
-          </p>
-          <div className="space-y-2 text-sm">
-            <div className="flex items-center justify-between">
-              <span>Tables créées</span>
-              <Badge variant="outline">20+</Badge>
+            <div className="w-10 h-10 rounded-lg bg-[#c8ff00]/10 flex items-center justify-center">
+              <Database className="h-5 w-5 text-[#c8ff00]" />
             </div>
-            <div className="flex items-center justify-between">
-              <span>Migrations</span>
-              <Badge variant="outline">12</Badge>
+            <h3 className="font-semibold text-white">Base de données</h3>
+          </div>
+          <div className="space-y-3">
+            <div className="flex justify-between text-sm">
+              <span className="text-[#666]">Provider</span>
+              <Badge className="bg-[#c8ff00]/10 text-[#c8ff00] border-0 text-[10px]">Supabase</Badge>
+            </div>
+            <div className="flex justify-between text-sm">
+              <span className="text-[#666]">Tables</span>
+              <span className="text-white">15+</span>
+            </div>
+            <div className="flex justify-between text-sm">
+              <span className="text-[#666]">Status</span>
+              <span className="text-[#c8ff00]">● Connecté</span>
             </div>
           </div>
         </Card>
 
-        <Card className="p-6">
+        <Card className="p-5 bg-[#141414] border-[#1a1a1a]">
           <div className="flex items-center gap-3 mb-4">
-            <Shield className="h-8 w-8 text-primary" />
-            <h3 className="text-xl font-semibold">Sécurité</h3>
-          </div>
-          <p className="text-muted-foreground mb-4">
-            Gestion des rôles et permissions administrateurs
-          </p>
-          <div className="space-y-2 text-sm">
-            <div className="flex items-center justify-between">
-              <span>Admins actifs</span>
-              <Badge variant="outline">4</Badge>
+            <div className="w-10 h-10 rounded-lg bg-[#c8ff00]/10 flex items-center justify-center">
+              <Shield className="h-5 w-5 text-[#c8ff00]" />
             </div>
-            <div className="flex items-center justify-between">
-              <span>RLS activé</span>
-              <Badge variant="default">Oui</Badge>
+            <h3 className="font-semibold text-white">Sécurité</h3>
+          </div>
+          <div className="space-y-3">
+            <div className="flex justify-between text-sm">
+              <span className="text-[#666]">RLS</span>
+              <Badge className="bg-[#c8ff00]/10 text-[#c8ff00] border-0 text-[10px]">Actif</Badge>
+            </div>
+            <div className="flex justify-between text-sm">
+              <span className="text-[#666]">Auth</span>
+              <span className="text-white">Supabase Auth</span>
+            </div>
+            <div className="flex justify-between text-sm">
+              <span className="text-[#666]">2FA</span>
+              <span className="text-[#666]">Non configuré</span>
             </div>
           </div>
         </Card>
 
-        <Card className="p-6">
+        <Card className="p-5 bg-[#141414] border-[#1a1a1a]">
           <div className="flex items-center gap-3 mb-4">
-            <Bell className="h-8 w-8 text-primary" />
-            <h3 className="text-xl font-semibold">Notifications</h3>
+            <div className="w-10 h-10 rounded-lg bg-[#c8ff00]/10 flex items-center justify-center">
+              <Globe className="h-5 w-5 text-[#c8ff00]" />
+            </div>
+            <h3 className="font-semibold text-white">API externes</h3>
           </div>
-          <p className="text-muted-foreground mb-4">
-            Configuration des notifications système
-          </p>
-          <div className="space-y-2 text-sm">
-            <div className="flex items-center justify-between">
-              <span>Emails activés</span>
-              <Badge variant="outline">Supabase</Badge>
+          <div className="space-y-3">
+            <div className="flex justify-between text-sm">
+              <span className="text-[#666]">Riot Games</span>
+              <span className="text-[#c8ff00]">● Connecté</span>
+            </div>
+            <div className="flex justify-between text-sm">
+              <span className="text-[#666]">Discord</span>
+              <span className="text-[#666]">Non configuré</span>
             </div>
           </div>
         </Card>
 
-        <Card className="p-6">
+        <Card className="p-5 bg-[#141414] border-[#1a1a1a]">
           <div className="flex items-center gap-3 mb-4">
-            <Settings className="h-8 w-8 text-primary" />
-            <h3 className="text-xl font-semibold">Système</h3>
-          </div>
-          <p className="text-muted-foreground mb-4">
-            Informations système et version
-          </p>
-          <div className="space-y-2 text-sm">
-            <div className="flex items-center justify-between">
-              <span>Version</span>
-              <Badge variant="outline">1.0.0</Badge>
+            <div className="w-10 h-10 rounded-lg bg-[#c8ff00]/10 flex items-center justify-center">
+              <Server className="h-5 w-5 text-[#c8ff00]" />
             </div>
-            <div className="flex items-center justify-between">
-              <span>Next.js</span>
-              <Badge variant="outline">16.0.7</Badge>
+            <h3 className="font-semibold text-white">Système</h3>
+          </div>
+          <div className="space-y-3">
+            <div className="flex justify-between text-sm">
+              <span className="text-[#666]">Version</span>
+              <span className="text-white">2.0.0</span>
+            </div>
+            <div className="flex justify-between text-sm">
+              <span className="text-[#666]">Next.js</span>
+              <span className="text-white">16.0.7</span>
+            </div>
+            <div className="flex justify-between text-sm">
+              <span className="text-[#666]">Node</span>
+              <span className="text-white">20.x</span>
             </div>
           </div>
         </Card>
@@ -116,4 +128,3 @@ export default async function AdminSettingsPage() {
     </div>
   )
 }
-

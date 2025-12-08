@@ -1,8 +1,8 @@
 import { createServerClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { CalendarEventsManager } from '@/components/admin/calendar-events-manager'
-import { Button } from '@/components/ui/button'
-import { Plus } from 'lucide-react'
+import { Badge } from '@/components/ui/badge'
+import { Calendar } from 'lucide-react'
 
 export default async function AdminCalendarPage() {
   const supabase = await createServerClient()
@@ -15,7 +15,6 @@ export default async function AdminCalendarPage() {
     redirect('/login')
   }
 
-  // Check if user is admin or CEO
   const { data: profile } = await supabase
     .from('profiles')
     .select('role')
@@ -28,17 +27,16 @@ export default async function AdminCalendarPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold mb-2">Gestion du calendrier</h1>
-          <p className="text-muted-foreground">
-            Ajoutez et gérez les événements personnalisés du calendrier QSPELL
-          </p>
-        </div>
+      <div>
+        <Badge className="mb-3 bg-[#c8ff00]/10 text-[#c8ff00] border-[#c8ff00]/20">
+          <Calendar className="h-3 w-3 mr-1" />
+          Gestion
+        </Badge>
+        <h1 className="text-2xl font-bold text-white mb-1">Événements</h1>
+        <p className="text-[#666]">Gérez les événements du calendrier</p>
       </div>
 
       <CalendarEventsManager />
     </div>
   )
 }
-

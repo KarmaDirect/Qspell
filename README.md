@@ -1,318 +1,131 @@
-# 🎮 QSPELL - Plateforme League of Legends Amateur
+# QSPELL - Plateforme Esport League of Legends
 
-**⚡ Master Your Q. Master Your Win. ⚡**
+![QSPELL](https://img.shields.io/badge/QSPELL-v2.0.0-purple)
+![Next.js](https://img.shields.io/badge/Next.js-16.0.7-black)
+![Supabase](https://img.shields.io/badge/Supabase-Backend-green)
 
-Plateforme communautaire pour joueurs League of Legends permettant de participer à des tournois amateurs, rejoindre des ligues, suivre des formations coaching, trouver des coéquipiers et partager son profil avec statistiques détaillées.
+## 🎮 Description
 
----
+QSPELL est une plateforme esport française dédiée à League of Legends. Elle permet aux joueurs de créer des équipes, lier leurs comptes Riot Games et participer à la vie de la communauté.
 
-## 🌟 Pourquoi "QSPELL" ?
+## ✨ Fonctionnalités
 
-**Q** = Première compétence dans League of Legends (touche Q)  
-**SPELL** = Sort/Magie (vocabulaire LoL)  
+### 👥 Gestion d'équipes
+- Créer et gérer votre équipe
+- Inviter des membres
+- Définir un tag et une région
+- Gérer les rôles (Capitaine, Membre)
 
-🎯 **Identité forte** : Tout joueur LoL comprend immédiatement  
-⚡ **Court & mémorable** : 6 lettres, facile à retenir  
-🌍 **International** : Fonctionne en FR et EN  
-🎨 **Brandable** : Logo évident (touche Q + effet magique)
+### 🎮 Intégration Riot Games
+- Lier plusieurs comptes LoL
+- Synchronisation automatique des stats
+- Affichage du rang et des performances
 
-**Tagline** : "Master Your Q. Master Your Win."
+### 📅 Calendrier d'événements
+- Événements publics de la communauté
+- Filtrage par type d'événement
+- Notifications
 
----
+### 🛡️ Espace Admin
+- Gestion des utilisateurs et rôles
+- Gestion du calendrier
+- Statistiques de la plateforme
 
-## 🚀 Technologies
+## 🚀 Démarrage rapide
 
-- **Next.js 14+** (App Router, TypeScript)
-- **React 18** avec Server Components
-- **TailwindCSS** + **shadcn/ui**
-- **Supabase** (PostgreSQL, Auth, Realtime, Storage)
-- **Riot Games API** - Données officielles LoL
-- **Upstash Redis** - Cache API Riot + leaderboards
-- **Tanstack Query** pour data fetching
-- **Zustand** pour state management
+### Prérequis
+- Node.js 18+
+- Compte Supabase
+- Clé API Riot Games
 
----
-
-## 📦 Installation
-
-### 1. Cloner le projet
+### Installation
 
 ```bash
-git clone <repository-url>
+# Cloner le repo
+git clone https://github.com/your-repo/qspell.git
 cd qspell
-```
 
-### 2. Installer les dépendances
-
-```bash
+# Installer les dépendances
 npm install
-```
 
-### 3. Configuration rapide (10 minutes)
+# Configurer les variables d'environnement
+cp .env.example .env.local
+# Éditer .env.local avec vos clés
 
-📚 **Voir [`QUICK_START.md`](QUICK_START.md) pour le guide complet**
-
-**Script automatique (Linux/Mac/Git Bash) :**
-```bash
-bash scripts/setup.sh
-```
-
-**Configuration manuelle** :
-1. **Supabase** : Créer projet + exécuter SQL + récupérer clés
-2. **Riot API** : Obtenir Personal API Key ([guide détaillé](docs/setup/riot-api-key.md))
-3. **Redis** (optionnel) : Créer base Upstash
-4. Créer `.env.local` avec vos clés
-
-```env
-# Supabase
-NEXT_PUBLIC_SUPABASE_URL=your-project-url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
-SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
-
-# Riot Games API
-RIOT_API_KEY=RGAPI-your-personal-key
-
-# Upstash Redis (optionnel)
-UPSTASH_REDIS_URL=your-redis-url
-UPSTASH_REDIS_TOKEN=your-redis-token
-
-# App
-NEXT_PUBLIC_APP_URL=http://localhost:8080
-```
-
-### 4. Lancer le serveur
-
-```bash
+# Lancer le serveur de dev
 npm run dev
 ```
 
-L'application sera accessible sur **http://localhost:8080** [[memory:6770529]]
+### Variables d'environnement
 
----
-
-## 🎯 Features
-
-### ✅ Implémenté (MVP)
-
-- ✅ **Authentification** : Inscription, connexion, profils
-- ✅ **Profils LoL** : Lien compte Riot, stats ranked (Solo/Duo, Flex)
-- ✅ **Tournois** : Création, liste, inscription
-- ✅ **API Riot** : ACCOUNT-V1, SUMMONER-V4, LEAGUE-V4, MATCH-V5
-- ✅ **Cache Redis** : Performance optimisée
-- ✅ **Dashboard** : Navigation complète
-
-### 🚧 En développement
-
-- ⏳ Page détails tournoi avec bracket viewer
-- ⏳ Système d'équipes (création, invitations, roster)
-- ⏳ Match reporting & validation
-- ⏳ Ligues saisonnières
-- ⏳ LFG (Looking For Group)
-- ⏳ Feed social & posts
-- ⏳ Coaching & formations
-
----
+```env
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+RIOT_API_KEY=your_riot_api_key
+```
 
 ## 📁 Structure du projet
 
 ```
-qspell/
-├── src/
-│   ├── app/                     # Pages Next.js
-│   │   ├── (auth)/             # Login, Register
-│   │   ├── (dashboard)/        # Dashboard et pages protégées
-│   │   ├── api/                # API Routes
-│   │   └── page.tsx            # Page d'accueil QSPELL
-│   ├── components/
-│   │   ├── ui/                 # shadcn/ui components
-│   │   ├── auth/               # Formulaires auth
-│   │   ├── profile/            # Composants profil
-│   │   ├── tournament/         # Composants tournois
-│   │   ├── admin/              # Composants admin
-│   │   ├── coaching/           # Composants coaching
-│   │   ├── leaderboard/        # Classements
-│   │   ├── teams/              # Gestion d'équipes
-│   │   └── shared/             # Navigation, etc.
-│   └── lib/
-│       ├── supabase/           # Client Supabase
-│       ├── riot-api/           # Client Riot API
-│       ├── redis/              # Cache Redis
-│       ├── auth/               # Permissions & auth
-│       └── types/              # Types TypeScript
-├── docs/                        # 📚 Documentation organisée
-│   ├── setup/                  # Guides de configuration
-│   │   ├── riot-api-key.md    # Obtenir clé Riot API
-│   │   └── github.md           # Configuration Git/GitHub
-│   └── admin/                  # Documentation admin
-│       └── admin-guide.md      # Guide complet admin
-├── scripts/                     # Scripts utilitaires
-│   ├── setup.sh                # Script de setup automatique
-│   └── create-admin-accounts.js
-├── supabase/
-│   └── migrations/             # Schéma SQL complet
-├── public/                      # Assets statiques
-├── QSPELL_BRAND.md             # 🎨 Brand identity
-├── QUICK_START.md              # ⚡ Configuration rapide
-├── RIOT_API.md                 # 🎮 Documentation API Riot
-└── README.md                   # Ce fichier
+src/
+├── app/
+│   ├── (auth)/          # Pages d'authentification
+│   ├── (dashboard)/     # Dashboard utilisateur
+│   │   └── dashboard/
+│   │       ├── admin/   # Espace admin
+│   │       ├── calendar/# Calendrier
+│   │       ├── profile/ # Profil utilisateur
+│   │       └── teams/   # Équipes
+│   └── api/             # Routes API
+├── components/
+│   ├── admin/           # Composants admin
+│   ├── auth/            # Composants auth
+│   ├── calendar/        # Calendrier
+│   ├── profile/         # Profil
+│   ├── teams/           # Équipes
+│   └── ui/              # Composants UI
+└── lib/
+    ├── auth/            # Gestion des rôles
+    ├── riot-api/        # Client Riot API
+    └── supabase/        # Clients Supabase
 ```
 
----
+## 🎨 Design System
 
-## 🎨 Brand Identity
+- **Couleur primaire**: Purple (#9333EA)
+- **Accent**: Gold/Orange
+- **Background**: Dark (#0a0a0a)
+- **UI Framework**: shadcn/ui + Tailwind CSS
 
-### Couleurs QSPELL
-```css
-/* Primary - Purple Magic */
---qspell-purple: #8B5CF6;
+## 🔐 Rôles utilisateur
 
-/* Secondary - Electric Blue (Q keybind) */
---qspell-blue: #3B82F6;
+| Rôle | Description |
+|------|-------------|
+| `user` | Utilisateur standard |
+| `admin` | Administrateur |
+| `ceo` | Super administrateur |
 
-/* Accent - Gold (Rewards) */
---qspell-gold: #F59E0B;
-```
-
-### Personnalité de marque
-- **Compétitif** mais **accessible**
-- **Skill-based** : Valorise la maîtrise technique
-- **Communautaire** : "Q Gods", "Q Masters"
-- **Récompensant** : Chaque Q peut changer le match
-
-📚 **Guide complet** : `QSPELL_BRAND.md`
-
----
-
-## 🛠 Scripts disponibles
+## 📝 Scripts disponibles
 
 ```bash
-# Développement
-npm run dev                      # Lancer l'app (port 8080)
-
-# Build
-npm run build                    # Build de production
-npm start                        # Démarrer en production
-
-# Supabase
-npm run supabase:push           # Appliquer migrations
-npm run supabase:types          # Générer types TypeScript
-
-# Linter
-npm run lint
+npm run dev      # Serveur de développement
+npm run build    # Build de production
+npm run start    # Serveur de production
+npm run lint     # Linter
 ```
 
----
+## 🛠️ Technologies
 
-## 📖 Documentation
+- **Frontend**: Next.js 16, React 19, TypeScript
+- **Styling**: Tailwind CSS 4, shadcn/ui
+- **Backend**: Supabase (PostgreSQL, Auth, RLS)
+- **API externe**: Riot Games API
+- **State**: Zustand, React Query
 
-### 🚀 Démarrage
-- 📋 **[QUICK_START.md](QUICK_START.md)** - Configuration complète en 10 minutes
-- 🔑 **[docs/setup/riot-api-key.md](docs/setup/riot-api-key.md)** - Obtenir une clé Riot API
-- 💻 **[docs/setup/github.md](docs/setup/github.md)** - Configuration Git et GitHub
+## 📄 Licence
 
-### 👑 Administration
-- 🛡️ **[docs/admin/admin-guide.md](docs/admin/admin-guide.md)** - Guide administrateur complet
-  - Système de rôles et permissions
-  - Gestion des utilisateurs
-  - Création de comptes admin
-  - Dashboard admin
-
-### 🎮 Technique
-- 🎯 **[RIOT_API.md](RIOT_API.md)** - Documentation API Riot détaillée
-- 🎨 **[QSPELL_BRAND.md](QSPELL_BRAND.md)** - Identité de marque complète
-- ⚙️ **[scripts/setup.sh](scripts/setup.sh)** - Script de setup automatique
+Tous droits réservés © 2024 QSPELL
 
 ---
 
-## 🎯 Fonctionnalités principales
-
-### 🏆 Q Arena (Tournois)
-Créez ou participez à des tournois communautaires :
-- Formats : Simple/Double élimination, Round Robin, Swiss
-- Restrictions de rang (Bronze → Challenger)
-- Prize pools
-- Brackets automatiques
-
-### 📊 Q Stats (Profils)
-Profils avec statistiques Riot Games en temps réel :
-- Rank Solo/Duo et Flex
-- Winrate, LP, KDA
-- Champion mastery
-- Historique de matchs
-
-### 🏅 Q League (Ligues)
-Ligues saisonnières avec :
-- Classements
-- Promotion/Relégation
-- Système de points
-- Calendrier de matchs
-
-### 👥 Q Squad (Équipes)
-Trouvez vos coéquipiers :
-- Création d'équipes
-- Recherche de joueurs (LFG)
-- Matchmaking intelligent
-- Team roster
-
-### 🎓 Q Academy (Coaching)
-Progressez avec :
-- Formations vidéo
-- Coaching 1-to-1
-- Guides par champion/rôle
-- Certifications
-
----
-
-## 🔐 Sécurité
-
-- Row Level Security (RLS) sur Supabase
-- Authentification sécurisée
-- API Keys protégées côté serveur
-- Rate limiting sur API routes
-- Validation Zod
-
----
-
-## 🌐 Domaines
-
-### Recommandés
-- **qspell.gg** ⭐ (Standard LoL community)
-- **qspell.fr** 🇫🇷 (Marché francophone)
-- **qspell.io** (Alternative tech)
-
-### Réseaux sociaux
-- Twitter/X : @qspell
-- Instagram : @qspell
-- Discord : qspell
-- TikTok : @qspell
-- Twitch : qspell
-
----
-
-## 🤝 Contribution
-
-Le projet est en développement actif. Les contributions sont bienvenues !
-
----
-
-## 📝 License
-
-MIT
-
----
-
-## 🎮 Disclaimer
-
-**QSPELL** n'est pas affilié à Riot Games. League of Legends et Riot Games sont des marques déposées ou des marques de service de Riot Games, Inc.
-
----
-
-<div align="center">
-
-**⚡ QSPELL - Where Every Q Counts ⚡**
-
-*Master Your Q. Master Your Win.*
-
-Made with 💜 for the LoL community
-
-</div>
+*QSPELL n'est pas affilié à Riot Games. League of Legends et Riot Games sont des marques déposées de Riot Games, Inc.*
